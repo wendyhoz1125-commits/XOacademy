@@ -6,10 +6,13 @@ import { Home } from '@/pages/Home'
 import { NotFound } from '@/pages/NotFound'
 import { Search } from '@/pages/Search'
 
+// The site can live under a sub-path (GitHub Pages: /XOacademy/). Vite exposes it as BASE_URL.
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
+
 // Routes match the live site so existing links keep working.
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
