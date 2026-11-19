@@ -9,4 +9,8 @@ export default defineConfig({
   resolve: {
     alias: { '@': path.resolve(import.meta.dirname, './src') },
   },
+  // Lets the dev server be shared through VS Code port forwarding (Dev Tunnels).
+  server: {
+    allowedHosts: ['.devtunnels.ms'],
+  },
 })
