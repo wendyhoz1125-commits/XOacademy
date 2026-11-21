@@ -69,7 +69,7 @@ const ART: Record<string, Art> = {
   'understanding-the-big-picture': {
     Icon: Compass,
     gradient:
-      'radial-gradient(70% 90% at 0% 0%, #B9A3F5, transparent 60%), radial-gradient(70% 90% at 55% 0%, #8EF0E6, transparent 65%), radial-gradient(60% 80% at 100% 10%, #C8F7F0, transparent 70%), #E9FBF6',
+      'radial-gradient(70% 90% at 0% 0%, #6C8CFF, transparent 62%), radial-gradient(65% 90% at 55% 0%, #8FD3FF, transparent 66%), radial-gradient(60% 80% at 100% 10%, #C6B8FF, transparent 70%), #EEF4FF',
   },
   'get-ready-and-prepare-to-schedule': {
     Icon: ClipboardCheck,
@@ -79,22 +79,22 @@ const ART: Record<string, Art> = {
   scheduling: {
     Icon: CalendarDays,
     gradient:
-      'radial-gradient(70% 90% at 0% 0%, #D9C8A8, transparent 62%), radial-gradient(60% 90% at 65% 15%, #CDE8A8, transparent 65%), radial-gradient(55% 80% at 100% 0%, #A8E0B8, transparent 70%), #F2F7EC',
+      'radial-gradient(70% 90% at 0% 0%, #2FBFC9, transparent 62%), radial-gradient(60% 90% at 60% 10%, #7FE0E8, transparent 66%), radial-gradient(55% 80% at 100% 0%, #5AA9F0, transparent 70%), #EAFAFB',
   },
   dailies: {
     Icon: Clock3,
     gradient:
-      'radial-gradient(50% 70% at 0% 0%, #E8D9A0, transparent 62%), radial-gradient(55% 90% at 100% 35%, #6FD69A, transparent 66%), radial-gradient(45% 70% at 85% 0%, #B8EFC8, transparent 70%), #F8FBF5',
+      'radial-gradient(60% 90% at 0% 0%, #F2D49B, transparent 62%), radial-gradient(55% 90% at 50% 0%, #F4B5A8, transparent 66%), radial-gradient(55% 90% at 100% 10%, #A9CDF2, transparent 70%), #FBF6F1',
   },
   'settings-and-environment': {
     Icon: SlidersHorizontal,
     gradient:
-      'radial-gradient(60% 90% at 0% 0%, #9AA8F0, transparent 62%), radial-gradient(55% 90% at 100% 0%, #2FD88A, transparent 66%), radial-gradient(60% 80% at 55% 35%, #9FE8D8, transparent 70%), #EEF9F6',
+      'radial-gradient(60% 90% at 0% 0%, #FF8FB8, transparent 62%), radial-gradient(55% 90% at 100% 0%, #FFB27A, transparent 66%), radial-gradient(60% 80% at 55% 35%, #D9A8F5, transparent 70%), #FFF3F3',
   },
   'frequently-asked-questions': {
     Icon: CircleHelp,
     gradient:
-      'radial-gradient(65% 90% at 0% 0%, #E9C9B0, transparent 62%), radial-gradient(60% 90% at 100% 20%, #A8D8B8, transparent 66%), radial-gradient(60% 80% at 50% 40%, #DDE8D0, transparent 70%), #F5F8F1',
+      'radial-gradient(65% 90% at 0% 0%, #9BE15D, transparent 62%), radial-gradient(60% 90% at 55% 10%, #4FD18B, transparent 66%), radial-gradient(55% 80% at 100% 0%, #C8F0A0, transparent 70%), #F1FBE9',
   },
   // Not public yet on the live site; ready for when it is published.
   'tips-and-tricks-to-make-life-smoother': {

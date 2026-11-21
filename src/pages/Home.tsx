@@ -1,6 +1,7 @@
+import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SearchBox } from '@/components/SearchBox'
-import { CategoryArt, GridMotif, LoginBanner, PageContainer, TaskList, useTitle } from '@/components/shared'
+import { CategoryArt, GridMotif, HelpBanner, PageContainer, TaskList, useTitle } from '@/components/shared'
 import {
   articlesIn,
   categories,
@@ -29,10 +30,10 @@ export function Home() {
         <PageContainer className="relative py-12 md:py-24">
           <p className="text-xs font-semibold tracking-[0.08em] text-hero-accent uppercase md:text-[13px]">XO Scheduler · Help center</p>
           <h1 className="mt-4 max-w-3xl font-heading text-4xl leading-[42px] tracking-[-0.03em] md:text-6xl md:leading-[64px]">
-            How can we help you plan today?
+            What Would You Like to Learn Today?
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-hero-muted">
-            Guides for scheduling simulators, instructors and classrooms, from your first resource to daily changes.
+            Explore guides and resources to get to know XO Scheduler, understand its features, and make the most of its tools for scheduling simulators, instructors, and classrooms.
           </p>
           <SearchBox variant="hero" className="mt-8 max-w-[680px]" />
           <p className="mt-4 text-sm text-hero-muted">
@@ -53,9 +54,9 @@ export function Home() {
         <section aria-labelledby="sections-title">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h2 id="sections-title" className="font-heading text-2xl leading-8 tracking-[-0.02em] md:text-[32px] md:leading-10">
-              All sections
+              All categories
             </h2>
-            <span className="text-[13px] text-muted-foreground">{categories.length} sections · start with 01</span>
+            <span className="text-[13px] text-muted-foreground">{categories.length} categories · start with 01</span>
           </div>
 
           <ol className="mt-5 space-y-3 sm:hidden">
@@ -68,7 +69,7 @@ export function Home() {
                   <CategoryArt slug={category.slug} className="size-16 shrink-0 items-center justify-center rounded-2xl" iconClassName="size-10 rounded-xl [&_svg]:size-5" />
                   <span className="min-w-0">
                     <span className="block text-xs font-semibold tracking-[0.06em] text-brand uppercase">
-                      Section {categoryNumber(category.slug)} · {pluralArticles(articlesIn(category.slug).length)}
+                      Category {categoryNumber(category.slug)} · {pluralArticles(articlesIn(category.slug).length)}
                     </span>
                     <span className="mt-1 block font-heading text-[17px] leading-6 font-medium">{category.name}</span>
                   </span>
@@ -77,22 +78,28 @@ export function Home() {
             ))}
           </ol>
 
-          <ol className="mt-7 hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+          <ol className="mt-7 hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <li key={category.slug} className="flex">
                 <Link
                   to={`/categories/${category.slug}`}
-                  className="group flex w-full flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-[0_10px_30px_rgb(45_52_49/0.1)] focus-visible:-outline-offset-2"
+                  className="group flex w-full flex-col rounded-3xl border bg-card shadow-[0_1px_2px_rgb(45_52_49/0.05)] transition duration-300 hover:-translate-y-1 hover:border-[#2d3431]/25 hover:shadow-[0_20px_48px_rgb(45_52_49/0.14)] focus-visible:-outline-offset-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                 >
-                  <CategoryArt slug={category.slug} className="h-42 flex-col justify-between p-5">
-                    <h3 className="relative font-heading text-[21px] leading-[26px] font-medium tracking-[-0.01em] text-[#1f2523]">{category.name}</h3>
-                  </CategoryArt>
-                  <span className="flex flex-1 flex-col gap-2 p-5">
-                    <span className="self-start rounded-full bg-primary px-2.5 py-1 text-xs font-semibold tracking-[0.06em] text-primary-foreground uppercase">
-                      Section {categoryNumber(category.slug)}
+                  <span className="relative block p-1.5">
+                    <CategoryArt slug={category.slug} className="h-28 items-start rounded-[18px] p-4 shadow-[inset_0_0_0_1px_rgb(255_255_255/0.5)]" iconClassName="size-12 rounded-2xl bg-white/80 backdrop-blur [&_svg]:size-6" />
+                    <span aria-hidden className="absolute top-5.5 right-5.5 rounded-full bg-white/80 px-2.5 py-1 text-xs font-semibold tracking-[0.08em] text-foreground tabular-nums backdrop-blur">
+                      {categoryNumber(category.slug)}
                     </span>
-                    <span className="text-[15px] leading-[22px] text-muted-foreground">{category.description}</span>
-                    <span className="mt-auto pt-2 text-xs text-muted-foreground">{pluralArticles(articlesIn(category.slug).length)}</span>
+                  </span>
+                  <span className="flex flex-1 flex-col px-6 pt-4 pb-6">
+                    <h3 className="font-heading text-xl leading-7 font-medium tracking-[-0.01em]">{category.name}</h3>
+                    <span className="mt-2 mb-5 line-clamp-3 text-[15px] leading-[22px] text-muted-foreground">{category.description}</span>
+                    <span className="mt-auto flex items-center justify-between border-t pt-4">
+                      <span className="text-sm font-medium text-muted-foreground">{pluralArticles(articlesIn(category.slug).length)}</span>
+                      <span aria-hidden className="grid size-9 place-items-center rounded-full border bg-background transition duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                        <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-px group-hover:-translate-y-px" />
+                      </span>
+                    </span>
                   </span>
                 </Link>
               </li>
@@ -109,7 +116,7 @@ export function Home() {
           </div>
         </section>
 
-        <LoginBanner />
+        <HelpBanner />
       </PageContainer>
     </>
   )

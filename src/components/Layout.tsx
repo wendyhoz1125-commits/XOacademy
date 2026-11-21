@@ -1,8 +1,8 @@
-import { LogIn, Menu, Search } from 'lucide-react'
+import { Menu, Search } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { SearchBox } from '@/components/SearchBox'
-import { APP_URL, CategoryArticleNav, CategoryNav, GridMotif, PageContainer, XoMark } from '@/components/shared'
+import { CategoryArticleNav, CategoryNav, GridMotif, PageContainer, XoMark } from '@/components/shared'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { getArticle } from '@/lib/content'
@@ -14,15 +14,6 @@ function Logo() {
       <XoMark className="h-5 w-10" />
       <span className="font-heading text-[22px] tracking-[0.01em]">Academy</span>
     </Link>
-  )
-}
-
-function LoginButton({ className }: { className?: string }) {
-  return (
-    <a href={APP_URL} className={cn(buttonVariants(), 'gap-2 rounded-full px-5 font-semibold', className)}>
-      <LogIn aria-hidden className="size-4.5" />
-      Log in
-    </a>
   )
 }
 
@@ -38,7 +29,6 @@ function SiteHeader() {
         <Logo />
         <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
           {showSearch && <SearchBox key={pathname} variant="header" className="hidden max-w-sm md:block" />}
-          <LoginButton className="hidden sm:inline-flex" />
           {showSearch && (
             <Link to="/search" aria-label="Search articles" className={cn(buttonVariants({ variant: 'outline', size: 'icon' }), 'rounded-full md:hidden')}>
               <Search aria-hidden className="size-5" />
@@ -54,7 +44,6 @@ function SiteHeader() {
                 <SheetTitle className="font-heading text-lg">Menu</SheetTitle>
               </SheetHeader>
               <nav aria-label="Menu" className="space-y-6 px-2 pb-8">
-                <LoginButton className="mx-3 w-[calc(100%-1.5rem)] sm:hidden" />
                 {article && (
                   <div>
                     <p className="mb-2 px-3 text-xs font-semibold tracking-[0.06em] text-muted-foreground uppercase">In this category</p>

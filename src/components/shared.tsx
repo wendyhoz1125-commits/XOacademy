@@ -1,4 +1,4 @@
-import { ArrowRight, LogIn, PlayCircle } from 'lucide-react'
+import { ArrowRight, PlayCircle } from 'lucide-react'
 import { Fragment, useEffect, useMemo } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
@@ -11,11 +11,10 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { normalizeArticle } from '@/lib/article'
-import { articlesIn, categories, categoryArt, getCategory, groupsFor, pluralArticles, type Article } from '@/lib/content'
+import { articles, articlesIn, categories, categoryArt, getCategory, groupsFor, pluralArticles, type Article } from '@/lib/content'
 import { cn } from '@/lib/utils'
 
 // Same destination as "Log In" on xoscheduler.com.
-export const APP_URL = 'https://app.xoscheduler.com/'
 
 export function useTitle(title: string) {
   useEffect(() => {
@@ -174,9 +173,9 @@ export function TaskList({ items }: { items: Article[] }) {
   )
 }
 
-export function ArticleBody({ html }: { html: string }) {
+export function ArticleBody({ html, gradient }: { html: string; gradient?: string }) {
   const body = useMemo(() => normalizeArticle(html).html, [html])
-  return <div className="article-body" dangerouslySetInnerHTML={{ __html: body }} />
+  return <div className="article-body" style={gradient ? ({ '--art': gradient } as React.CSSProperties) : undefined} dangerouslySetInnerHTML={{ __html: body }} />
 }
 
 const navRow = 'flex min-h-11 items-center justify-between gap-3 rounded-md px-3 py-2.5 text-[15px] font-medium text-[#434b47] hover:bg-muted'
@@ -251,30 +250,41 @@ export function CategoryArticleNav({ article, onNavigate }: { article: Article; 
   )
 }
 
-export function LoginBanner({ className }: { className?: string }) {
+// Closing banner for the home page. It links nowhere; the figures come from the content, so they stay current.
+export function HelpBanner({ className }: { className?: string }) {
+  const facts = [
+    { value: categories.length, label: 'categories' },
+    { value: articles.length, label: 'articles' },
+  ]
   return (
     <section
-      aria-labelledby="login-title"
-      className={cn('on-dark relative flex flex-wrap items-center justify-between gap-6 overflow-hidden rounded-3xl bg-hero p-7 text-white md:p-10', className)}
+      aria-labelledby="help-title"
+      className={cn('on-dark relative overflow-hidden rounded-3xl bg-hero p-7 text-white md:p-10', className)}
       style={{
         backgroundImage:
           'radial-gradient(60% 120% at 100% 0%, rgb(79 127 116 / 0.6), transparent 65%), radial-gradient(50% 120% at 0% 100%, rgb(47 93 83 / 0.7), transparent 70%)',
       }}
     >
-      <div className="relative min-w-0 flex-[1_1_26rem]">
-        <p className="text-xs font-semibold tracking-[0.08em] text-hero-accent uppercase">XO Scheduler</p>
-        <h2 id="login-title" className="mt-2.5 font-heading text-2xl leading-8 tracking-[-0.02em] md:text-[32px] md:leading-10">
-          Ready to plan? Log in to XO Scheduler
+      <div className="relative max-w-2xl">
+        <p className="text-xs font-semibold tracking-[0.08em] text-hero-accent uppercase">XO Scheduler · Help center</p>
+        <h2 id="help-title" className="mt-2.5 font-heading text-2xl leading-8 tracking-[-0.02em] md:text-[32px] md:leading-10">
+          Every answer, one search away
         </h2>
-        <p className="mt-2 max-w-xl text-[17px] leading-[26px] text-hero-muted">Put these guides into practice in your own schedule.</p>
+        <p className="mt-2 text-[17px] leading-[26px] text-hero-muted">Guides for every step of your scheduling, from your first resource to daily changes.</p>
       </div>
-      <a
-        href={APP_URL}
-        className="relative inline-flex min-h-13 items-center gap-2.5 rounded-full bg-white px-7 font-semibold text-foreground transition-colors hover:bg-hero-muted"
-      >
-        <LogIn aria-hidden className="size-5" />
-        Log in
-      </a>
+      <dl className="relative mt-7 flex flex-wrap gap-x-10 gap-y-4">
+        {facts.map((fact) => (
+          <div key={fact.label}>
+            <dt className="sr-only">{fact.label}</dt>
+            <dd className="font-heading text-3xl leading-9 tracking-[-0.02em] md:text-4xl">
+              {fact.value}
+              <span className="ml-2 text-sm font-normal tracking-normal text-hero-muted" aria-hidden>
+                {fact.label}
+              </span>
+            </dd>
+          </div>
+        ))}
+      </dl>
     </section>
   )
 }

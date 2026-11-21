@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArticleBody, ArticleMeta, CategoryArticleNav, Crumbs, Kicker, PageContainer, useTitle } from '@/components/shared'
-import { articlesIn, getArticle, getCategory, groupOf, type Article as ArticleType } from '@/lib/content'
+import { articlesIn, categoryArt, getArticle, getCategory, groupOf, type Article as ArticleType } from '@/lib/content'
 import { rememberArticle } from '@/lib/recent'
 import { cn } from '@/lib/utils'
 import { NotFound } from '@/pages/NotFound'
@@ -54,16 +54,21 @@ export function Article() {
         </aside>
 
         <article className="min-w-0 max-w-[720px]">
-          <Kicker>
-            Article {String(position).padStart(2, '0')}
-            {group.title && ` · ${group.title}`}
-          </Kicker>
-          <h1 className="mt-3.5 font-heading text-3xl leading-9 tracking-[-0.03em] md:text-[44px] md:leading-[50px]">{article.title}</h1>
-          {article.excerpt && <p className="mt-3.5 text-lg text-muted-foreground md:text-[19px] md:leading-[30px]">{article.excerpt}</p>}
-          <ArticleMeta article={article} className="mt-4.5" />
+          <header className="relative overflow-hidden rounded-3xl border p-6 md:p-9" style={{ background: categoryArt(article.categorySlug).gradient }}>
+            <div aria-hidden className="absolute inset-0 bg-white/55" />
+            <div className="relative">
+              <Kicker className="text-[#1f4a41]">
+                Article {String(position).padStart(2, '0')}
+                {group.title && ` · ${group.title}`}
+              </Kicker>
+              <h1 className="mt-3.5 font-heading text-3xl leading-9 tracking-[-0.03em] md:text-[44px] md:leading-[50px]">{article.title}</h1>
+              {article.excerpt && <p className="mt-3.5 text-lg text-[#2d3431] md:text-[19px] md:leading-[30px]">{article.excerpt}</p>}
+              <ArticleMeta article={article} className="mt-5" />
+            </div>
+          </header>
 
-          <div className="mt-9">
-            <ArticleBody html={article.html} />
+          <div className="mt-7">
+            <ArticleBody html={article.html} gradient={categoryArt(article.categorySlug).gradient} />
           </div>
 
           <nav aria-label="More in this category" className="mt-14 grid gap-3 sm:grid-cols-2">

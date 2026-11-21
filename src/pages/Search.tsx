@@ -2,15 +2,13 @@ import { useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Highlighted, SearchBox } from '@/components/SearchBox'
 import { CategoryArt, CategoryNav, Crumbs, PageContainer, useTitle } from '@/components/shared'
-import { articlesIn, categories, getCategory, POPULAR_SEARCHES, searchArticles, snippet, type Article } from '@/lib/content'
+import { getCategory, POPULAR_SEARCHES, searchArticles, snippet, type Article } from '@/lib/content'
 import { cn } from '@/lib/utils'
 
 const PER_PAGE = 10
-const SITELINKS = 4
 
-function Result({ article, query, withSitelinks }: { article: Article; query: string; withSitelinks: boolean }) {
+function Result({ article, query }: { article: Article; query: string }) {
   const category = getCategory(article.categorySlug)
-  const sitelinks = withSitelinks ? articlesIn(article.categorySlug).filter((a) => a.slug !== article.slug).slice(0, SITELINKS) : []
   return (
     <li className="border-b py-6">
       <div className="flex items-start gap-6">
@@ -34,21 +32,9 @@ function Result({ article, query, withSitelinks }: { article: Article; query: st
               {article.title}
             </Link>
           </h2>
-          <p className="mt-1.5 text-[15px] leading-[23px] text-[#434b47]">
+          <p className="mt-1.5 line-clamp-2 text-[15px] leading-[23px] text-[#434b47]">
             <Highlighted text={snippet(article, query)} query={query} />
           </p>
-          {sitelinks.length > 0 && (
-            <ul className="mt-3.5 grid gap-x-7 gap-y-1 border-l-2 border-brand/20 pl-4 sm:grid-cols-2">
-              {sitelinks.map((link) => (
-                <li key={link.slug}>
-                  <Link to={`/articles/${link.slug}`} className="flex min-h-11 items-center font-medium text-brand hover:underline hover:underline-offset-4">
-                    {link.title}
-                  </Link>
-                  {link.excerpt && <span className="line-clamp-1 block text-[13px] leading-[18px] text-muted-foreground">{link.excerpt}</span>}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
         <CategoryArt
           slug={article.categorySlug}
@@ -61,14 +47,13 @@ function Result({ article, query, withSitelinks }: { article: Article; query: st
 }
 
 export function Search() {
-  const [params, setParams] = useSearchParams()
+  const [params] = useSearchParams()
   const query = params.get('q')?.trim() ?? ''
   const filter = params.get('cat') ?? ''
   const pageParam = Number(params.get('page') ?? '1')
   useTitle(query ? `Search: ${query}` : 'Search')
 
   const all = useMemo(() => searchArticles(query), [query])
-  const found = categories.filter((c) => all.some((a) => a.categorySlug === c.slug))
   const results = filter ? all.filter((a) => a.categorySlug === filter) : all
   const pageCount = Math.max(1, Math.ceil(results.length / PER_PAGE))
   const page = Math.min(Math.max(1, Number.isFinite(pageParam) ? pageParam : 1), pageCount)
@@ -81,31 +66,6 @@ export function Search() {
     if (cat) p.set('cat', cat)
     if ((next.page ?? 1) > 1) p.set('page', String(next.page))
     return `/search?${p}`
-  }
-  const setFilter = (cat: string) => setParams(new URLSearchParams(hrefFor({ cat, page: 1 }).split('?')[1]))
-
-  const chip = (label: string, value: string, count: number) => {
-    const on = value === filter
-    return (
-      <button
-        key={value || 'all'}
-        type="button"
-        aria-pressed={on}
-        onClick={() => setFilter(value)}
-        className={cn(
-          'inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-sm font-medium',
-          on ? 'border-primary bg-primary text-primary-foreground' : 'bg-card hover:bg-muted',
-        )}
-      >
-        {value ? (
-          <CategoryArt slug={value} className="size-3 rounded-full" iconClassName="hidden" />
-        ) : (
-          <span aria-hidden className="size-3 rounded-full bg-[conic-gradient(#FF7A8A,#FFC46B,#7FE3C0,#9AA8F0,#FF7A8A)]" />
-        )}
-        {label}
-        <span className="text-xs opacity-80">{count}</span>
-      </button>
-    )
   }
 
   return (
@@ -128,17 +88,10 @@ export function Search() {
           </p>
         )}
 
-        {all.length > 0 && found.length > 1 && (
-          <div role="group" aria-label="Filter by category" className="-mx-4 mt-4 px-4 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible">
-            {chip('All', '', all.length)}
-            {found.map((c) => chip(c.name, c.slug, all.filter((a) => a.categorySlug === c.slug).length))}
-          </div>
-        )}
-
         {visible.length > 0 && (
           <ol className="mt-2">
-            {visible.map((article, i) => (
-              <Result key={article.slug} article={article} query={query} withSitelinks={page === 1 && !filter && i === 0} />
+            {visible.map((article) => (
+              <Result key={article.slug} article={article} query={query} />
             ))}
           </ol>
         )}

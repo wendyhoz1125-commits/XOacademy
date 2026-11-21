@@ -6,7 +6,7 @@ import { getArticle, getCategory, highlight, POPULAR_SEARCHES, searchArticles, t
 import { getRecent } from '@/lib/recent'
 import { cn } from '@/lib/utils'
 
-const MAX_SUGGESTIONS = 6
+const MAX_SUGGESTIONS = 4
 
 export function Highlighted({ text, query }: { text: string; query: string }) {
   return (
@@ -162,10 +162,7 @@ export function SearchBox({
           {typing ? (
             results.length > 0 ? (
               <>
-                <p className="flex justify-between px-5 pt-3.5 pb-1.5 text-xs font-semibold tracking-[0.06em] text-muted-foreground uppercase">
-                  <span>Articles</span>
-                  <span>{results.length} results</span>
-                </p>
+                <p className="px-5 pt-3.5 pb-1.5 text-xs font-semibold tracking-[0.06em] text-muted-foreground uppercase">Articles</p>
                 <ul className="max-h-[60vh] overflow-y-auto px-2 pb-2">
                   {results.slice(0, MAX_SUGGESTIONS).map((article) => (
                     <li key={article.slug}>
@@ -185,21 +182,18 @@ export function SearchBox({
                   className="flex min-h-12 items-center justify-between border-t bg-muted/60 px-5 font-medium text-brand hover:bg-muted focus-visible:-outline-offset-2"
                 >
                   See all {results.length} results for “{q}”
-                  <span aria-hidden className="hidden text-xs text-muted-foreground sm:inline">
-                    ↑ ↓ · Enter · Esc
-                  </span>
                 </Link>
               </>
             ) : (
               <p className="px-5 py-4 text-muted-foreground">
-                No articles match “{q}”. Try a shorter word, or browse the sections.
+                No articles match “{q}”. Try a shorter word, or browse the categories.
               </p>
             )
           ) : (
             <>
               <p className="px-5 pt-4 pb-2 text-xs font-semibold tracking-[0.06em] text-muted-foreground uppercase">Popular searches</p>
               <div className="px-5 pb-4 flex gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible">
-                {POPULAR_SEARCHES.map((term) => (
+                {POPULAR_SEARCHES.slice(0, 4).map((term) => (
                   <Link
                     key={term}
                     data-option
@@ -215,7 +209,7 @@ export function SearchBox({
                 <>
                   <p className="border-t px-5 pt-4 pb-1.5 text-xs font-semibold tracking-[0.06em] text-muted-foreground uppercase">Recently viewed</p>
                   <ul className="px-2 pb-2">
-                    {recent.map((article) => (
+                    {recent.slice(0, 3).map((article) => (
                       <li key={article.slug}>
                         <Link data-option to={`/articles/${article.slug}`} onClick={() => setOpen(false)} className={cn(option, 'flex items-center gap-3')}>
                           <Clock3 aria-hidden className="size-4.5 shrink-0 text-muted-foreground" />

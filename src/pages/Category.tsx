@@ -35,7 +35,7 @@ export function Category() {
           <header className="flex flex-wrap items-center justify-between gap-8">
             <div className="min-w-0 flex-[1_1_22rem]">
               <Kicker>
-                Section {categoryNumber(category.slug)} of {String(categories.length).padStart(2, '0')}
+                Category {categoryNumber(category.slug)} of {String(categories.length).padStart(2, '0')}
               </Kicker>
               <h1 className="mt-3 font-heading text-3xl leading-9 tracking-[-0.03em] md:text-[44px] md:leading-[50px]">{category.name}</h1>
               <p className="mt-3.5 max-w-[68ch] text-lg text-muted-foreground">{category.description}</p>
