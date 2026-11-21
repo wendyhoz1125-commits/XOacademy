@@ -198,14 +198,14 @@ export function SearchBox({
           ) : (
             <>
               <p className="px-5 pt-4 pb-2 text-xs font-semibold tracking-[0.06em] text-muted-foreground uppercase">Popular searches</p>
-              <div className="flex flex-wrap gap-2 px-5 pb-4">
+              <div className="px-5 pb-4 flex gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible">
                 {POPULAR_SEARCHES.map((term) => (
                   <Link
                     key={term}
                     data-option
                     to={`/search?q=${encodeURIComponent(term)}`}
                     onClick={() => setOpen(false)}
-                    className="inline-flex min-h-11 items-center rounded-full border px-4 text-sm hover:bg-muted"
+                    className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-sm hover:bg-muted"
                   >
                     {term}
                   </Link>

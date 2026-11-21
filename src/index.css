@@ -69,6 +69,14 @@
     --hero-muted: #d5ddd9;
 }
 
+/* Horizontal scroller without a visible scrollbar (still scrolls by touch, wheel and keyboard focus). */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

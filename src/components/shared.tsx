@@ -42,7 +42,7 @@ export function XoMark({ className }: { className?: string }) {
   )
 }
 
-// The tic-tac-toe motif from the brand footer.
+// The tic-tac-toe motif from the brand footer, with the row of three X's struck through like a won game.
 export function GridMotif({ className }: { className?: string }) {
   return (
     <svg aria-hidden viewBox="0 0 300 300" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -50,6 +50,7 @@ export function GridMotif({ className }: { className?: string }) {
       <path d="M130 130l40 40M170 130l-40 40M30 130l40 40M70 130l-40 40M230 130l40 40M270 130l-40 40" strokeLinecap="round" strokeWidth="4" />
       <circle cx="250" cy="50" r="20" strokeWidth="4" />
       <circle cx="250" cy="250" r="20" strokeWidth="4" />
+      <path d="M16 150h268" strokeLinecap="round" strokeWidth="3.5" />
     </svg>
   )
 }

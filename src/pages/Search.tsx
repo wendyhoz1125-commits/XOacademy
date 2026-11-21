@@ -93,7 +93,7 @@ export function Search() {
         aria-pressed={on}
         onClick={() => setFilter(value)}
         className={cn(
-          'inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium',
+          'inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-sm font-medium',
           on ? 'border-primary bg-primary text-primary-foreground' : 'bg-card hover:bg-muted',
         )}
       >
@@ -129,7 +129,7 @@ export function Search() {
         )}
 
         {all.length > 0 && found.length > 1 && (
-          <div role="group" aria-label="Filter by category" className="mt-4 flex flex-wrap gap-2">
+          <div role="group" aria-label="Filter by category" className="-mx-4 mt-4 px-4 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible">
             {chip('All', '', all.length)}
             {found.map((c) => chip(c.name, c.slug, all.filter((a) => a.categorySlug === c.slug).length))}
           </div>
@@ -183,9 +183,9 @@ export function Search() {
               <h2 id="popular-title" className="font-heading text-xl">
                 Popular searches
               </h2>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="-mx-4 mt-3 px-4 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:overflow-visible">
                 {POPULAR_SEARCHES.map((term) => (
-                  <Link key={term} to={`/search?q=${encodeURIComponent(term)}`} className="inline-flex min-h-11 items-center rounded-full border bg-card px-4 text-sm hover:bg-muted">
+                  <Link key={term} to={`/search?q=${encodeURIComponent(term)}`} className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full border bg-card px-4 text-sm hover:bg-muted">
                     {term}
                   </Link>
                 ))}
