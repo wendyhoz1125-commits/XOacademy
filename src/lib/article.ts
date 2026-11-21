@@ -77,6 +77,56 @@ function groupLooseLists(doc: Document) {
   }
 }
 
+// Line icons (Lucide, ISC licence) used inside article content to make it quicker to scan.
+const ICONS = {
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  tip: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/>',
+  warning: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/>',
+  play: '<circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4Z"/>',
+  steps: '<path d="m3 17 2 2 4-4M3 7l2 2 4-4M13 6h8M13 12h8M13 18h8"/>',
+  book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  done: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/>',
+  next: '<circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4 4 4-4 4"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  sliders: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  sparkles: '<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>',
+} as const
+type IconName = keyof typeof ICONS
+
+const svg = (name: IconName) =>
+  '<svg aria-hidden="true" class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + '</svg>'
+
+// Picks an icon for a section from the words in its title.
+const HEADING_ICONS: [RegExp, IconName][] = [
+  [/video|watch|tutorial/i, 'play'],
+  [/wrapping|result|summary|conclusion|benefit/i, 'done'],
+  [/next step|what's next/i, 'next'],
+  [/related|links/i, 'link'],
+  [/example|scenario|workflow|use case/i, 'users'],
+  [/tip|best practice|recommend/i, 'tip'],
+  [/qualif|rule|compliance|permission/i, 'shield'],
+  [/propert|setting|config|preset|filter/i, 'sliders'],
+  [/time|slot|calendar|daily|availability|schedul/i, 'calendar'],
+  [/step|how to|guide|create|add|manag|assign|import|build/i, 'steps'],
+  [/intro|overview|understanding|what|why|big picture|terms|part \d/i, 'book'],
+]
+const iconForHeading = (text: string): IconName => HEADING_ICONS.find(([pattern]) => pattern.test(text))?.[1] ?? 'sparkles'
+
+function addIcons(doc: Document) {
+  for (const h2 of Array.from(doc.body.querySelectorAll('h2'))) {
+    h2.insertAdjacentHTML('afterbegin', '<span class="ico-tile">' + svg(iconForHeading(h2.textContent ?? '')) + '</span>')
+  }
+  for (const callout of Array.from(doc.body.querySelectorAll('.callout'))) {
+    const type = /callout-warning/.test(callout.className) ? 'warning' : /callout-tip/.test(callout.className) ? 'tip' : 'info'
+    callout.insertAdjacentHTML('afterbegin', svg(type))
+  }
+  for (const example of Array.from(doc.body.querySelectorAll('.example'))) example.insertAdjacentHTML('afterbegin', svg('users'))
+  for (const title of Array.from(doc.body.querySelectorAll('.terms'))) title.querySelectorAll('li').forEach((li) => li.insertAdjacentHTML('afterbegin', svg('book')))
+}
+
 // Wraps each section in its own block.
 function wrapSections(doc: Document) {
   // Short answers without section titles (the FAQs) sit in a single card, with the text a bit larger.
@@ -218,7 +268,7 @@ function enrichParagraphs(doc: Document) {
       const type = /important/i.test(label) ? 'warning' : /tip|remember/i.test(label) ? 'tip' : 'note'
       p.className = `callout callout-${type}`
       p.setAttribute('data-label', label.replace(/^A Note About Costs$/i, 'Note about costs'))
-      p.textContent = callout[2]
+      p.textContent = callout[2].charAt(0).toUpperCase() + callout[2].slice(1)
       continue
     }
 
@@ -360,6 +410,7 @@ export function normalizeArticle(raw: string) {
   }
 
   wrapSections(doc)
+  addIcons(doc)
 
   return { html: doc.body.innerHTML, headings }
 }

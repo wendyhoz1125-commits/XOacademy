@@ -1,4 +1,4 @@
-import { ArrowRight, PlayCircle } from 'lucide-react'
+import { ArrowRight, Clock3, PlayCircle } from 'lucide-react'
 import { Fragment, useEffect, useMemo } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
@@ -116,7 +116,10 @@ export function Crumbs({ items }: { items: { label: string; to?: string }[] }) {
 export function ArticleMeta({ article, className }: { article: Article; className?: string }) {
   return (
     <span className={cn('flex flex-wrap items-center gap-2 text-xs font-semibold tracking-[0.04em] uppercase', className)}>
-      <span className="rounded-full border px-2.5 py-1 text-muted-foreground">{article.minutes} min read</span>
+      <span className="inline-flex items-center gap-1 rounded-full border bg-white/60 px-2.5 py-1 text-muted-foreground">
+        <Clock3 aria-hidden className="size-3.5" />
+        {article.minutes} min read
+      </span>
       {article.hasVideo && (
         <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 text-brand">
           <PlayCircle aria-hidden className="size-3.5" />
