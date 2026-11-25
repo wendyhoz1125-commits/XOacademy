@@ -264,7 +264,6 @@
   height: auto;
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgb(45 52 49 / 0.1);
 }
 .article-body .video {
   aspect-ratio: 16 / 9;
@@ -529,4 +528,35 @@
 }
 .article-body .step ul {
   padding-left: 0;
+}
+
+/* Screenshots in a window frame. */
+.article-body .shot {
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid #c9d0cd;
+  border-radius: 16px;
+}
+.article-body .shot-bar {
+  display: flex;
+  gap: 6px;
+  padding: 0.625rem 0.875rem;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.article-body .shot-bar i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: #c9d0cd;
+}
+.article-body .shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto 16 / 9;
+  background: var(--muted);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }

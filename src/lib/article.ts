@@ -405,8 +405,18 @@ export function normalizeArticle(raw: string) {
   }
 
   for (const img of Array.from(doc.body.querySelectorAll('img'))) {
-    img.setAttribute('loading', 'lazy')
+    // Screenshots load right away: lazy images have no height until they load, so the page jumps and they look missing.
+    img.setAttribute('decoding', 'async')
+    img.removeAttribute('loading')
     img.removeAttribute('class')
+    if (!img.getAttribute('alt')) img.setAttribute('alt', 'Screenshot of XO Scheduler')
+    const frame = doc.createElement('figure')
+    frame.className = 'shot'
+    frame.innerHTML = '<span class="shot-bar" aria-hidden="true"><i></i><i></i><i></i></span>'
+    const parent = img.parentElement
+    const alone = parent?.tagName === 'P' && parent.children.length === 1 && !parent.textContent?.trim()
+    ;(alone ? parent : img).replaceWith(frame)
+    frame.append(img)
   }
 
   wrapSections(doc)
